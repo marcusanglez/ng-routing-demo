@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {ReactiveFormsModule} from "@angular/forms";
 
-import { PersonRoutingModule } from './person-routing.module';
-import { PersonComponent } from '../person.component';
+import { PersonComponent } from './person.component';
 import { PersonListComponent } from './person-list/person-list.component';
 import { PersonEditComponent } from './person-list/edit/person-edit.component';
+import { PersonRoutingModule } from './person-routing.module';
+import {PersonService} from "./service/person.service";
 
 
 @NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    PersonRoutingModule
+  ],
   declarations: [
     PersonComponent,
     PersonListComponent,
     PersonEditComponent
   ],
-  imports: [
-    CommonModule,
-    PersonRoutingModule
-  ]
+  providers:[ PersonService ]
 })
 export class PersonModule { }

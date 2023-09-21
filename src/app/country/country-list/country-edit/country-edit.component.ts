@@ -1,9 +1,51 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params, Router} from "@angular/router";
+import {FormControl, FormGroup} from "@angular/forms";
+import {switchMap} from "rxjs/operators";
+import {CountryService} from "../../service/country.service";
+import {Country} from "../../country";
 
 @Component({
-  selector: 'app-country-edit',
   templateUrl: './country-edit.component.html'
 })
-export class CountryEditComponent {
+export class CountryEditComponent implements OnInit{
+  country = {} as Country;
+  constructor(
+      private countryService: CountryService,
+      private route: ActivatedRoute,
+      private router: Router) {  }
 
+  ngOnInit():void{
+    this.route.params.pipe(
+        switchMap((params: Params) =>
+          this.countryService.getCountry( + params['country-id']))
+    ).subscribe(country => {
+      this.country = country ?? {} as Country;
+      this.setFormValues();
+    });
+  }
+
+  countryForm = new FormGroup({
+    name: new FormControl(),
+    capital: new FormControl(),
+    currency: new FormControl()
+  });
+
+  setFormValues():void{
+    this.countryForm.setValue({
+      name: this.country.countryName,
+      capital: this.country.capital,
+      currency: this.country.currency
+    });
+  }
+
+  onFormSubmit(): void{
+    this.country.countryName = this.countryForm.get('name')?.value;
+    this.country.capital = this.countryForm.get('capital')?.value;
+    this.country.currency = this.countryForm.get('currency')?.value;
+
+    this.countryService.updateCountry(this.country)
+        .then(() => this.router.navigate(['../../'], {relativeTo: this.route}))
+    ;
+  }
 }
