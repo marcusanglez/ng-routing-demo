@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-country',
-  templateUrl: `
+  template: `
     <p>
       country works!
     </p>
-  `,
-  styleUrls: ['./country.component.css']
+  `
 })
 export class CountryComponent {
 

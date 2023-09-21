@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
       person works!
     </p>
   `,
-  styleUrls: ['./person.component.css']
 })
 export class PersonComponent {
 
